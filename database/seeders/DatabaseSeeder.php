@@ -21,5 +21,8 @@ class DatabaseSeeder extends Seeder
         'password' =>'rayquaza',
         'isAdmin' => 1,
        ]);
+       $this->call([ CategorieSeeder::class,BrandSeeder::class,ProductSeeder::class]);
+
+       
     }
 }

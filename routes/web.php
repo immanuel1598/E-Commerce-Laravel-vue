@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -33,7 +36,13 @@ Route::prefix('admin')->middleware('redirectAdmin')->group(function () {
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->group( function(){
     Route::get('/dashboard',[AdminController::class , 'index'])->name('admin.dashboard');
-
+    //productes routes
+    Route::get('/products', [ProductController::class, 'index'])->name('admin.products.index');
+    Route::post('/products/store', [[ProductController::class, 'store']])->name('admin.products.store');
+    //brands routes
+    Route::get('/brands', [BrandController::class, 'index'])->name('admin.brands.index');
+    //categories routes
+    Route::get('/categories', [CategorieController::class, 'index'])->name('admin.categories.index');
 });
 //end
 require __DIR__.'/auth.php';
