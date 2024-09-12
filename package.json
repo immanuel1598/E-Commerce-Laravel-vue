@@ -18,6 +18,8 @@
         "vue": "^3.4.0"
     },
     "dependencies": {
-        "flowbite": "^2.5.1"
+        "element-plus": "^2.8.2",
+        "flowbite": "^2.5.1",
+        "vue-sweetalert2": "^5.0.11"
     }
 }
