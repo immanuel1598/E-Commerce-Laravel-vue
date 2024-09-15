@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Str;
 
 class ProductController extends Controller
 {
@@ -16,7 +17,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::get();
+        $products = Product::with('categorie', 'brand', 'product_images')->get();
         $categories = Categorie::get();
         $brands = Brand::get();
         return Inertia::render('Admin/Product/Index', ['products' => $products, 'categories' => $categories, 'brands' => $brands]);
@@ -49,10 +50,10 @@ class ProductController extends Controller
             $productImages = $request->file('product_images');
             foreach ($productImages as $image) {
                 if ($image->isValid()) {
-                    $path = $image->store();
+                    $path = $image->store('Images', 'public');
                     ProductImage::create([
                         'product_id' => $product->id,
-                        'image' => $path
+                        'image' => "/storage/" . $path
                     ]);
                 }
             }
@@ -81,14 +82,53 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $product->title = $request->title;
+        $product->price = $request->price;
+        $product->quantity = $request->quantity;
+        $product->description = $request->description;
+        $product->categorie_id = $request->categorie_id;
+        $product->brand_id = $request->brand_id;
+        // check if image uload
+
+        if ($request->hasFile('product_images')) {
+            // $productImage = $request->file('product_images');
+            // foreach ($productImage as $image) {
+            //     $uniqueName = time() . '-'  . Str::random(10) . '.' . $image->getClientOriginalExtension();
+            //     //store the image in the public folder
+            //     $image->move('product_images', $uniqueName);
+            //     //create a new product image
+            //     ProductImage::create([
+            //         'product_id' => $product->id,
+            //         'image' => 'product_images/' . $uniqueName,
+            //     ]);
+            // }
+            $productImages = $request->file('product_images');
+            foreach ($productImages as $image) {
+                if ($image->isValid()) {
+                    $path = $image->store('Images', 'public');
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'image' => "/storage/" . $path
+                    ]);
+                }
+            }
+        }
+        $product->save();
+        return redirect()->back('admin.products.index')->with('success', 'Product updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function deleteImage($id)
     {
-        //
+        $image = ProductImage::where('id', $id)->delete();
+        return redirect()->route('admin.products.index')->with('success', 'Image deleted successfully');
+    }
+
+    public function destroy($id)
+    {
+        $product = Product::find($id)->delete();
+        return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully');
     }
 }
