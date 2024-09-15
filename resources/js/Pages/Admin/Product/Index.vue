@@ -3,12 +3,12 @@ import AdminLayout from '../Components/AdminLayout.vue';
 import ProductList from './ProductList.vue';
 
 defineProps({
-    product:Array,
+    products:Array,
 });
 </script>
 
 <template>
  <AdminLayout>
-<ProductList product = "product"></ProductList>
+<ProductList :products = "products"></ProductList>
  </AdminLayout>
 </template>

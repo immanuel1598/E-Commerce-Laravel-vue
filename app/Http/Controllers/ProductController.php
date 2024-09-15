@@ -114,7 +114,7 @@ class ProductController extends Controller
             }
         }
         $product->save();
-        return redirect()->back('admin.products.index')->with('success', 'Product updated successfully');
+        return redirect()->route('admin.products.index')->with('success', 'Product updated successfully');
     }
 
     /**
@@ -129,6 +129,6 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::find($id)->delete();
-        return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully');
+        return redirect()->back('admin.products.index')->with('success', 'Product deleted successfully');
     }
 }

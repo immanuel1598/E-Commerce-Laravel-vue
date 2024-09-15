@@ -7,9 +7,9 @@ import 'element-plus/dist/index.css';
 import { Plus } from '@element-plus/icons-vue'
 
 defineProps({
-    product: Array,
+    products: Array,
 });
-const products = usePage().props.products;
+
 const categories = usePage().props.categories;
 const brands = usePage().props.brands;
 const dialogVisible = ref(false);
@@ -288,10 +288,9 @@ const deleteProduct = (product, index) => {
                     <div v-for="(pimage, index) in product_images" :key="pimage.id" class="relative w-32 h-32 ">
                         <img class="w-24 h-20 rounded " :src="`${pimage.image}`" alt="">
                         <span
-                            class="absolute top-0 right-8 transform -translate-y-1/2 w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-800 rounded-full">
+                            class=" cursor-pointer absolute top-0 right-8 transform -translate-y-1/2 w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-800 rounded-full">
                             <span @click="deleteImage(pimage, index)"
-                                class="text-white text-xs font-bold absolute top-1/2 left-1/2 transform -translate-x-1/2">
-                                X</span>
+                                class="text-white text-xs font-bold absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">X</span>
                         </span>
                     </div>
                 </div>
